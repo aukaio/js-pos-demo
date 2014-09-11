@@ -98,12 +98,12 @@ define(['jquery'], function ($) {
 	},
 
 	abortPaymentRequest: function (tid) {
-	    return updatePaymentRequest(tid, 'ABORT');
+	    return this.updatePaymentRequest(tid, 'ABORT');
 	},
 
 	capturePaymentRequest: function (tid) {
-	    return updatePaymentRequest(tid, 'CAPTURE');
-	}	
+	    return this.updatePaymentRequest(tid, 'CAPTURE');
+	}
 
     };
 
