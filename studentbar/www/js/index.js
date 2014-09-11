@@ -23,6 +23,7 @@ require.config({
 });
 
 
-require(['jquery', 'app'], function ($, App) {
+require(['jquery', 'app', 'merchant'], function ($, App, Merchant) {
     App.start();
 });
+
