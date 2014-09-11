@@ -19,6 +19,6 @@ require.config({
 });
 
 
-require(['jquery', 'merchant'], function ($, Merchant) {
-    Merchant.createShortlink({serial_number: 3});
+require(['jquery', 'app'], function ($, App) {
+    App.start();
 });
