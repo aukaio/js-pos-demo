@@ -15,20 +15,24 @@ define(['jquery'], function ($) {
     var api = {
 
         createShortlink: function (serial_number) {
+	    if(serial_number == undefined) {
+		data = JSON.stringify({})
+	    }else{
+		data = JSON.stringify({serial_number: serial_number})
+	    }
 	    $.ajax({
 		url: serverUrl + '/merchant/v1/shortlink/',
 		type: 'post',
-		data: JSON.stringify({
-		    serial_number: serial_number
-		}),
+		data: data,
 		headers: headers,
 		dataType: 'json',
 	    }).done(function (res) {
 		console.log(res);
+		return res;
 	    });
         },
 	
-        shortLinkLastScan: function (shortlink_id) {
+        pollShortLinkLastScan: function (shortlink_id) {
 	    $.ajax({
 		url: serverUrl + '/merchant/v1/shortlink/' + String(shortlink_id) + '/last_scan/',
 		type: 'get',
@@ -38,12 +42,17 @@ define(['jquery'], function ($) {
 		headers: headers
 	    }).done(function (res) {
 		console.log(res);
+		if(res != undefined && 'id' in res ) {
+		    return res['id'];
+		}else{
+		    return res
+		};
 	    });
         },
 	
         makePaymentRequest: function (scan_token, amount) {
 	    $.ajax({
-		url: serverUrl + '/merchant/v1/shortlink/',
+		url: serverUrl + '/merchant/v1/payment_request/',
 		type: 'post',
 		data: JSON.stringify({
 		    customer: scan_token,
@@ -51,15 +60,50 @@ define(['jquery'], function ($) {
 		    amount: amount,
 		    pos_id: pos_id,
 		    pos_tid: scan_token,
+		    allow_credit: true,
 		    action: 'auth'
 		}),
 		headers: headers,
 		dataType: 'json'
 	    }).done(function (res) {
 		console.log(res);
+		return res;
 	    });
-	}
+	},
 
+        paymentRequestOutcome: function (tid) {
+	    $.ajax({
+		url: serverUrl + '/merchant/v1/payment_request/' + String(tid) + '/outcome/',
+		type: 'get',
+		headers: headers
+	    }).done(function (res) {
+		console.log(res);
+		return res;
+	    });
+	},
+	
+	updatePaymentRequest: function (tid, action) {
+	    $.ajax({
+		url: serverUrl + '/merchant/v1/payment_request/' + String(tid) + '/',
+		type: 'put',
+		data: JSON.stringify({
+		    action: action
+		}),
+		headers: headers,
+		dataType: 'json'
+	    }).done(function (res) {
+		console.log(res);
+		return res;
+	    });
+	},
+
+	abortPaymentRequest: function (tid) {
+	    return updatePaymentRequest(tid, 'ABORT');
+	},
+
+	capturePaymentRequest: function (tid) {
+	    return updatePaymentRequest(tid, 'CAPTURE');
+	}	
 
     };
 
