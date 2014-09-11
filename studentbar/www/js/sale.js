@@ -26,6 +26,7 @@ function (_, Backbone, saleEntryTemplate) {
 
         render: function (options) {
             var v;
+            this.$el.empty();
             _.each(this.collection.models, function(sale) {
                 v = new Sale.SaleEntryView({model: sale});
                 this.$el.append(v.render().$el);
