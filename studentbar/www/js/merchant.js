@@ -1,4 +1,4 @@
-define(['jquery'], function ($) {
+define(['jquery', 'libs/when/poll'], function ($, poll) {
 
     var serverUrl = 'https://mcashdevelop.appspot.com'
     var merchant_id = 'dummy'
@@ -20,7 +20,7 @@ define(['jquery'], function ($) {
             } else {
                 data = JSON.stringify({serial_number: serial_number})
             }
-            $.ajax({
+            return $.ajax({
                 url: serverUrl + '/merchant/v1/shortlink/',
                 type: 'post',
                 data: data,
@@ -28,28 +28,31 @@ define(['jquery'], function ($) {
                 dataType: 'json',
             }).done(function (res) {
                 console.log(res);
-                return res;
             });
         },
 	
-        pollShortLinkLastScan: function (shortlink_id) {
-            $.ajax({
-                url: serverUrl + '/merchant/v1/shortlink/' + String(shortlink_id) + '/last_scan/',
-                type: 'get',
-                data: {
-                    ttl: 60
-                },
-                headers: headers
-            }).done(function (res) {
-                console.log(res);
-                if(res != undefined && 'id' in res ) {
-                    return res['id'];
-                } else {
-                    return res
+        pollShortLinkLastScan: function(shortlink_id, ttl) {
+            ttl = ttl || 60;
+            return poll(
+                function () {
+                    return $.ajax({
+                        url: serverUrl + '/merchant/v1/shortlink/' + shortlink_id + '/last_scan/',
+                        type: 'get',
+                        data: {
+                            ttl: ttl
+                        },
+                        headers: headers
+                    }).then(function(res) {
+                        if (res && 'id' in res) {
+                            return res.id;
+                        }
+                    });
+                }, 1000, function (res) {
+                    return res;
                 }
-            });
+            );
         },
-	
+
         makePaymentRequest: function (scan_token, amount) {
             $.ajax({
                 url: serverUrl + '/merchant/v1/payment_request/',
