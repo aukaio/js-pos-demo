@@ -18,9 +18,9 @@ define(['jquery'], function ($) {
 	    $.ajax({
 		url: serverUrl + '/merchant/v1/shortlink/',
 		type: 'post',
-		data: {
+		data: JSON.stringify({
 		    serial_number: serial_number
-		},
+		}),
 		headers: headers,
 		dataType: 'json',
 	    }).done(function (res) {
@@ -45,14 +45,14 @@ define(['jquery'], function ($) {
 	    $.ajax({
 		url: serverUrl + '/merchant/v1/shortlink/',
 		type: 'post',
-		data: {
+		data: JSON.stringify({
 		    customer: scan_token,
 		    currency: 'NOK',
 		    amount: amount,
 		    pos_id: pos_id,
 		    pos_tid: scan_token,
 		    action: 'auth'
-		},
+		}),
 		headers: headers,
 		dataType: 'json'
 	    }).done(function (res) {
