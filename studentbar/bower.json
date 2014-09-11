@@ -1,0 +1,21 @@
+{
+  "name": "StudentBar",
+  "version": "0.0.0",
+  "homepage": "https://github.com/mcash/studentbar",
+  "authors": [
+    "mCASH"
+  ],
+  "description": "mCASH js placeholder package",
+  "dependencies": {
+    "jquery": "2.1.1",
+    "underscore": "1.6.0",
+    "backbone": "1.1.2",
+    "requirejs": "2.1.14",
+    "requirejs-text": ""
+  },
+  "moduleType": [
+    "amd"
+  ],
+  "license": "BSD",
+  "private": true
+}
