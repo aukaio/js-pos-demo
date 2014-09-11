@@ -10,6 +10,7 @@
     "jquery": "2.1.1",
     "underscore": "1.6.0",
     "backbone": "1.1.2",
+    "Backbone.localStorage": "1.1.13",
     "requirejs": "2.1.14",
     "requirejs-text": ""
   },
@@ -17,5 +18,8 @@
     "amd"
   ],
   "license": "BSD",
-  "private": true
+  "private": true,
+  "resolutions": {
+    "backbone": "1.1.2"
+  }
 }

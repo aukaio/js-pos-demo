@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone'],
-function ($, _, Backbone) {
+define(['jquery', 'underscore', 'backbone', 'product'],
+function ($, _, Backbone, Product) {
 
     var app = _.extend({
 
@@ -10,7 +10,7 @@ function ($, _, Backbone) {
 
         initializeRouter: function () {
             // Trigger the initial route and enable HTML5 History API support
-            Backbone.history.start({ pushState: true, root: '/metrics/dashboard'});
+            Backbone.history.start({ pushState: true, root: '/'});
 
             // All navigation that is relative should be passed through the navigate
             // method, to be processed by the router.  If the link has a data-bypass
@@ -39,10 +39,17 @@ function ($, _, Backbone) {
 
         routes: {
             '': 'home',
+            'edit': 'edit'
         },
 
         home: function () {
-            console.log('asd');
+            var products = new Product.Products();
+            products.fetch();
+            var v = new Product.ProductsView({collection: products});
+            $('#main').html(v.render().$el);
+        },
+
+        edit: function () {
         }
     });
 

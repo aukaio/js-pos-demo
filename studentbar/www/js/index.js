@@ -4,10 +4,14 @@ require.config({
     paths: {
         app: 'app',
         merchant: 'merchant',
+        product: 'product',
 
         jquery: 'libs/jquery/dist/jquery',
         underscore: 'libs/underscore/underscore',
         backbone: 'libs/backbone/backbone',
+        backboneLS: 'libs/Backbone.localStorage/backbone.localStorage',
+        text: 'libs/requirejs-text/text',
+
     },
 
     shim: {
