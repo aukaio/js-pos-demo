@@ -1,6 +1,7 @@
 define(['underscore', 'backbone', 'text!/templates/product.html', 'backboneLS'],
 function (_, Backbone, productTemplate) {
 
+
     var Product = {};
 
     Product.Product = Backbone.Model.extend({
@@ -24,6 +25,8 @@ function (_, Backbone, productTemplate) {
         }
     });
 
+
+
     Product.ProductEditView = Backbone.View.extend({
 
         render: function (options) {
@@ -40,7 +43,8 @@ function (_, Backbone, productTemplate) {
                 this.$el.append(v.render().$el);
             }, this);
             return this;
-        }
+        },
+
 
     });
 
