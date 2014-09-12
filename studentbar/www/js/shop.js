@@ -1,9 +1,14 @@
-define(['underscore', 'backbone', 'merchant', 'text!/templates/product.html', 'text!/templates/shop.html', 'backboneLS', 'bootstrap'],
-function (_, Backbone, merchant, productTemplate, shopTemplate) {
+define(['underscore', 'backbone', 'merchant',
+        'text!/templates/product.html',
+        'text!/templates/shop.html',
+        'text!/templates/alert.html',
+        'backboneLS', 'bootstrap'],
+function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate) {
 
     var shortlinkId = 'xyQ7H';
-
     var Shop = {};
+
+    alertTemplate = _.template(alertTemplate);
 
     Shop.Product = Backbone.Model.extend({
         defaults: {
@@ -61,14 +66,17 @@ function (_, Backbone, merchant, productTemplate, shopTemplate) {
             var posTid = Math.random().toString(36).substring(5);
             var p = merchant.sale(this.sum, posTid, shortlinkId, 20)
                 .progress(function (progress) {
-                    console.log(progress);
+                    self.$('.modal-body').text(progress);
                 })
                 .done(function () {
                     self.$('#sellModal').modal('hide');
+                    self.$el.prepend(alertTemplate({message: 'Payment successful', type: 'success'}));
                     self.clear();
                 })
                 .fail(function () {
                     self.$('#sellModal').modal('hide');
+                    self.$el.prepend(alertTemplate({message: 'Payment failed', type: 'danger'}));
+
                 });
             this.$('#sellModal').modal().on('hidden.bs.modal', function () {
 
