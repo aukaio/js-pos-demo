@@ -62,7 +62,7 @@ define(['jquery', 'libs/when/poll'], function ($, poll) {
             return p;
         },
 
-        makePaymentRequest: function (scan_token, amount) {
+        makePaymentRequest: function (pos_tid, scan_token, amount) {
             return $.ajax({
                 url: serverUrl + '/merchant/v1/payment_request/',
                 type: 'post',
@@ -71,7 +71,7 @@ define(['jquery', 'libs/when/poll'], function ($, poll) {
                     currency: 'NOK',
                     amount: amount,
                     pos_id: pos_id,
-                    pos_tid: scan_token,
+                    pos_tid: pos_tid,
                     allow_credit: true,
                     action: 'auth'
                 }),
@@ -105,7 +105,40 @@ define(['jquery', 'libs/when/poll'], function ($, poll) {
 
         capturePaymentRequest: function (tid) {
             return api.updatePaymentRequest(tid, 'CAPTURE');
+        },
+
+        pollAuth: function (tid) {
+            var p = $.Deferred();
+            var poll = function (t) {
+                return setTimeout(function () {
+                    api.paymentRequestOutcome(tid)
+                    .done(function(res) {
+                        var status = res.status && res.status.toLowerCase() || '';
+                        if (status === 'auth' || status === 'ok') {
+                            clearTimeout(timeout);
+                            p.resolve(status);
+                        } else if (status === 'pending') {
+                            timeout = poll(1000);
+                        } else {
+                            p.reject(status);
+                            clearTimeout(timeout);
+                        }
+                    })
+                    .fail(function () {
+                        p.reject();
+                        clearTimeout(timeout);
+                    });
+                }, t);
+            };
+            p.fail(function () {
+                if (timeout) {
+                    clearTimeout(timeout);
+                }
+            });
+            var timeout = poll(0);
+            return p;
         }
+
     };
 
     return api;

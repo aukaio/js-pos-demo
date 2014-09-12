@@ -1,6 +1,7 @@
-define(['underscore', 'backbone', 'merchant', 'text!/templates/product.html', 'text!/templates/shop.html', 'backboneLS'],
+define(['underscore', 'backbone', 'merchant', 'text!/templates/product.html', 'text!/templates/shop.html', 'backboneLS', 'bootstrap'],
 function (_, Backbone, merchant, productTemplate, shopTemplate) {
 
+    var shortlinkId = 'xyQ7H';
 
     var Shop = {};
 
@@ -56,6 +57,24 @@ function (_, Backbone, merchant, productTemplate, shopTemplate) {
         },
 
         sell: function (ev) {
+            var self = this;
+            var p = merchant.pollShortLinkLastScan(shortlinkId, 20);
+            this.$('#sellModal').modal().on('hidden.bs.modal', function () {
+
+            });
+            p.done(function (token) {
+                var prp = merchant.makePaymentRequest(token, token, self.sum.toFixed(2));
+                prp.done(function (res) {
+                    var tid = res.id;
+                    var rop = merchant.pollAuth(tid)
+                        .done(function () {
+                            merchant.capturePaymentRequest(tid).done(function () {
+                                self.$('#sellModal').modal('hide');
+                                self.clear();
+                            });
+                        });
+                });
+            });
 
         },
 

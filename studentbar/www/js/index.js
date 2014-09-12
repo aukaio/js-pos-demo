@@ -11,6 +11,7 @@ require.config({
         backbone: 'libs/backbone/backbone',
         backboneLS: 'libs/Backbone.localStorage/backbone.localStorage',
         text: 'libs/requirejs-text/text',
+        bootstrap: 'libs/bootstrap/dist/js/bootstrap'
 
     },
 
