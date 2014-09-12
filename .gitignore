@@ -50,3 +50,7 @@ IOS/www/
 .Trashes
 
 /studentbar/www/js/libs/
+/studentbar/platforms/
+
+.idea/
+
