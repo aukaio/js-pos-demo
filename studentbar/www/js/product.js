@@ -38,14 +38,13 @@ function (_, Backbone, productTemplate) {
 
         render: function (options) {
             var v;
-            this.$el.empty();
+            this.$el.html('');
             _.each(this.collection.models, function(product) {
                 v = new Product.ProductView({model: product});
                 this.$el.append(v.render().$el);
             }, this);
             return this;
         },
-
 
     });
 

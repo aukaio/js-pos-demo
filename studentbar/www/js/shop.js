@@ -22,7 +22,7 @@ function (_, Backbone, Product, Sale, shopTemplate) {
         },
 
         render: function (options) {
-            this.$el.empty().append(
+            this.$el.html('').append(
                 this.productsView.render(options).$el
             ).append(
                this.saleView.render(options).$el

@@ -1,36 +1,33 @@
 define(['jquery', 'libs/when/poll'], function ($, poll) {
 
-    var serverUrl = 'https://mcashdevelop.appspot.com'
-    var merchant_id = 'dummy'
-    var merchant_user_id = 'apu'
-    var secret = 'supersecret'
-    var pos_id = 'default'
+    var serverUrl = 'https://mcashdevelop.appspot.com';
+    var merchant_id = 'dummy';
+    var merchant_user_id = 'apu';
+    var secret = 'supersecret';
+    var pos_id = 'default';
     var headers = {
 	"Accept": 'application/vnd.mcash.api.merchant.v1+json',
 	"Content-Type": 'application/json',
 	"X-Mcash-Merchant": merchant_id,
 	"X-Mcash-User": merchant_user_id,
-	"Authorization": 'SECRET ' + secret}
+	"Authorization": 'SECRET ' + secret};
 
     var api = {
 
         createShortlink: function (serial_number) {
-            if(serial_number == undefined) {
-                data = JSON.stringify({})
-            } else {
-                data = JSON.stringify({serial_number: serial_number})
+            data = {};
+            if(!serial_number) {
+                data.serial_number = serial_number;
             }
             return $.ajax({
-                url: serverUrl + '/merchant/v1/shortlink/',
+                url: serverUrl + '/merc1hant/v1/shortlink/',
                 type: 'post',
-                data: data,
+                data: JSON.stringify(data),
                 headers: headers,
                 dataType: 'json',
-            }).done(function (res) {
-                console.log(res);
             });
         },
-	
+
         pollShortLinkLastScan: function(shortlink_id, ttl) {
             ttl = ttl || 60;
             return poll(
@@ -54,7 +51,7 @@ define(['jquery', 'libs/when/poll'], function ($, poll) {
         },
 
         makePaymentRequest: function (scan_token, amount) {
-            $.ajax({
+            return $.ajax({
                 url: serverUrl + '/merchant/v1/payment_request/',
                 type: 'post',
                 data: JSON.stringify({
@@ -68,46 +65,35 @@ define(['jquery', 'libs/when/poll'], function ($, poll) {
                 }),
                 headers: headers,
                 dataType: 'json'
-            }).done(function (res) {
-                console.log(res);
-                return res;
             });
         },
 
         paymentRequestOutcome: function (tid) {
-            $.ajax({
-                url: serverUrl + '/merchant/v1/payment_request/' + String(tid) + '/outcome/',
-                type: 'get',
+            return $.ajax({
+                url: serverUrl + '/merchant/v1/payment_request/' + tid + '/outcome/',
                 headers: headers
-            }).done(function (res) {
-                console.log(res);
-                return res;
             });
         },
-	
+
         updatePaymentRequest: function (tid, action) {
-            $.ajax({
-                url: serverUrl + '/merchant/v1/payment_request/' + String(tid) + '/',
+            return $.ajax({
+                url: serverUrl + '/merchant/v1/payment_request/' +tid + '/',
                 type: 'put',
                 data: JSON.stringify({
                     action: action
                 }),
                 headers: headers,
                 dataType: 'json'
-            }).done(function (res) {
-                console.log(res);
-                return res;
             });
         },
 
         abortPaymentRequest: function (tid) {
-            return this.updatePaymentRequest(tid, 'ABORT');
+            return api.updatePaymentRequest(tid, 'ABORT');
         },
 
         capturePaymentRequest: function (tid) {
-            return this.updatePaymentRequest(tid, 'CAPTURE');
+            return api.updatePaymentRequest(tid, 'CAPTURE');
         }
-
     };
 
     return api;
