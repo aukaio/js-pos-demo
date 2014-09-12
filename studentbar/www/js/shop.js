@@ -1,47 +1,73 @@
-define(['underscore', 'backbone', 'product', 'sale', 'text!/templates/shop.html', 'backboneLS'],
-function (_, Backbone, Product, Sale, shopTemplate) {
+define(['underscore', 'backbone', 'merchant', 'text!/templates/product.html', 'text!/templates/shop.html', 'backboneLS'],
+function (_, Backbone, merchant, productTemplate, shopTemplate) {
+
 
     var Shop = {};
+
+    Shop.Product = Backbone.Model.extend({
+        defaults: {
+            price: 0
+        }
+    });
+
+    Shop.Products = Backbone.Collection.extend({
+        localStorage: new Backbone.LocalStorage("Products"),
+        model: Shop.Product
+    });
+
+    Shop.ProductEntryView = Backbone.View.extend({
+
+        tagName: 'li',
+        template: _.template(productTemplate),
+
+        render: function (options) {
+            this.$el.html(this.template(this.model.toJSON()));
+            this.$el.attr('id', this.model.id);
+            return this;
+        }
+    });
 
     Shop.ShopView = Backbone.View.extend({
 
         template: _.template(shopTemplate),
 
         initialize: function (options) {
-            var sale = new Sale.Sale();
-            sale.fetch();
-            var products = new Product.Products();
-            products.fetch();
-            if (products.size() == 0) {
-                products.create({title: 'Vanity Cola', price: 1000});
-                products.create({title: 'Beer', price: 10});
-            }
-
-            this.saleView = new Sale.SaleView({collection: sale});
-            this.productsView = new Product.ProductsView({collection: products});
-        },
-
-        render: function (options) {
-            this.$el.html('').append(
-                this.productsView.render(options).$el
-            ).append(
-               this.saleView.render(options).$el
-            );
-            console.log(this.productsView.render(options).$el);
-            return this;
+            this.sum = 0;
         },
 
         events: {
-			'click #product': 'addProduct'
-		},
+            'click li': 'addItem',
+            'click #clear': 'clear',
+            'click #sell': 'sell'
+        },
 
-        addProduct: function (e){
-            e.preventDefault();
-            var id = $(e.currentTarget).data('id');
-            var product = this.productsView.collection.get(id);
-            this.saleView.collection.create({title: product.get('title'), price: product.get('price'), quantity: 1});
-            this.saleView.render();
-        }
+        addItem: function (ev) {
+            var product = this.collection.get(ev.currentTarget.id);
+            var quantity = parseInt($(ev.currentTarget).find('.quantity').text());
+            $(ev.currentTarget).find('.quantity').text(quantity+1);
+            this.sum += product.get('price');
+            this.$('.totalAmount').text(this.sum);
+        },
+
+        clear: function (ev) {
+            this.sum = 0;
+            this.$('.quantity').text('0');
+            this.$('.totalAmount').text(this.sum);
+        },
+
+        sell: function (ev) {
+
+        },
+
+        render: function (options) {
+            var v;
+            this.$el.html(this.template({total: 0}));
+            _.each(this.collection.models, function(product) {
+                v = new Shop.ProductEntryView({model: product});
+                this.$('#products').append(v.render().$el);
+            }, this);
+            return this;
+        },
 
     });
 

@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'product', 'sale', 'shop'],
-function ($, _, Backbone, Product, Sale, Shop) {
+define(['jquery', 'underscore', 'backbone', 'shop'],
+function ($, _, Backbone, Shop) {
 
     var app = _.extend({
 
@@ -43,7 +43,14 @@ function ($, _, Backbone, Product, Sale, Shop) {
         },
 
         home: function () {
-            var shop = new Shop.ShopView();
+            var products = new Shop.Products();
+            products.fetch();
+            if (products.size() === 0) {
+                products.create({title: 'Vanity Cola', price: 1000});
+                products.create({title: 'Beer', price: 10});
+            }
+
+            var shop = new Shop.ShopView({collection: products});
             $('#main').html(shop.render().$el);
         },
 

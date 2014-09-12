@@ -4,7 +4,7 @@ require.config({
     paths: {
         app: 'app',
         merchant: 'merchant',
-        product: 'product',
+        shop: 'shop',
 
         jquery: 'libs/jquery/dist/jquery',
         underscore: 'libs/underscore/underscore',
