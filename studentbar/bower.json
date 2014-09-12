@@ -13,7 +13,6 @@
     "Backbone.localStorage": "1.1.13",
     "requirejs": "2.1.14",
     "requirejs-text": "",
-    "when": ""
   },
   "moduleType": [
     "amd"

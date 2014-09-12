@@ -30,24 +30,36 @@ define(['jquery', 'libs/when/poll'], function ($, poll) {
 
         pollShortLinkLastScan: function(shortlink_id, ttl) {
             ttl = ttl || 60;
-            return poll(
-                function () {
-                    return $.ajax({
+            var p = $.Deferred();
+            var poll = function (t) {
+                return setTimeout(function () {
+                    $.ajax({
                         url: serverUrl + '/merchant/v1/shortlink/' + shortlink_id + '/last_scan/',
                         type: 'get',
                         data: {
                             ttl: ttl
                         },
                         headers: headers
-                    }).then(function(res) {
+                    }).done(function(res) {
                         if (res && 'id' in res) {
-                            return res.id;
+                            clearTimeout(timeout);
+                            p.resolve(res.id);
+                        } else {
+                            timeout = poll(1000);
                         }
+                    }).fail(function () {
+                        p.reject();
+                        clearTimeout(timeout);
                     });
-                }, 1000, function (res) {
-                    return res;
+                }, t);
+            };
+            p.fail(function () {
+                if (timeout) {
+                    clearTimeout(timeout);
                 }
-            );
+            });
+            var timeout = poll(0);
+            return p;
         },
 
         makePaymentRequest: function (scan_token, amount) {
