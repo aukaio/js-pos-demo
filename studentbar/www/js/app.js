@@ -38,7 +38,7 @@ function ($, _, Backbone, Shop) {
     var Router = Backbone.Router.extend({
 
         routes: {
-            '': 'home',
+            '': 'edit',
             'edit': 'edit'
         },
 
@@ -55,6 +55,10 @@ function ($, _, Backbone, Shop) {
         },
 
         edit: function () {
+            var products = new Shop.Products();
+            products.fetch();
+            var productEditView = new Shop.ProductListView({collection: products});
+            $('#main').html(productEditView.render().$el);
         }
     });
 

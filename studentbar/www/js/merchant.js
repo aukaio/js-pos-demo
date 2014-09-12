@@ -1,4 +1,4 @@
-define(['jquery', 'libs/when/poll'], function ($, poll) {
+define(['jquery'], function ($) {
 
     var serverUrl = 'https://mcashdevelop.appspot.com';
     var merchant_id = 'dummy';
@@ -24,7 +24,7 @@ define(['jquery', 'libs/when/poll'], function ($, poll) {
                 type: 'post',
                 data: JSON.stringify(data),
                 headers: headers,
-                dataType: 'json',
+                dataType: 'json'
             });
         },
 

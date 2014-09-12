@@ -2,13 +2,34 @@ define(['underscore', 'backbone', 'merchant',
         'text!/templates/product.html',
         'text!/templates/shop.html',
         'text!/templates/alert.html',
+        'text!/templates/product_list.html',
+        'text!/templates/product_edit.html',
         'backboneLS', 'bootstrap'],
-function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate) {
+function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, productListTemplate, productEditTemplate) {
 
     var shortlinkId = 'xyQ7H';
     var Shop = {};
 
-    alertTemplate = _.template(alertTemplate);
+    var alertTemplate = _.template(alertTemplate);
+    var productEditTemplate = _.template(productEditTemplate);
+
+    Shop.ProductListView = Backbone.View.extend({
+
+        template: _.template(productListTemplate),
+
+        render: function() {
+            var self = this;
+            var products = this.collection.models;
+            this.$el.html(this.template());
+            this.collection.each(function (product){
+                self.$('#products').append(
+                    productEditTemplate(product.toJSON())
+                );
+            })
+
+            return this;
+        }
+    });
 
     Shop.Product = Backbone.Model.extend({
         defaults: {
@@ -93,7 +114,10 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate) {
             return this;
         },
 
+
     });
+
+
 
     return Shop;
 
