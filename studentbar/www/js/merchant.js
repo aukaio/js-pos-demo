@@ -137,6 +137,28 @@ define(['jquery', 'libs/when/poll'], function ($, poll) {
             });
             var timeout = poll(0);
             return p;
+        },
+
+        sale: function (amount, posTid, shortlinkId, ttl) {
+            var self = this;
+            var p = $.Deferred();
+
+            api.pollShortLinkLastScan(shortlinkId, 20).done(function (token) {
+                p.notify('shortlink_scanned');
+                api.makePaymentRequest(posTid, token, amount.toFixed(2)).done(function (res) {
+                    p.notify('payment_request_sent');
+                    var tid = res.id;
+                    api.pollAuth(tid).done(function () {
+                        p.notify('payment_authorized');
+                        api.capturePaymentRequest(tid).done(function () {
+                            p.notify('payment_captured');
+                            p.resolve();
+                        }).fail(p.reject);
+                    }).fail(p.reject);
+                }).fail(p.reject);
+            }).fail(p.reject);
+            return p;
+
         }
 
     };

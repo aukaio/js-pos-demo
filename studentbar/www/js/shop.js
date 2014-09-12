@@ -58,24 +58,21 @@ function (_, Backbone, merchant, productTemplate, shopTemplate) {
 
         sell: function (ev) {
             var self = this;
-            var p = merchant.pollShortLinkLastScan(shortlinkId, 20);
+            var posTid = Math.random().toString(36).substring(5);
+            var p = merchant.sale(this.sum, posTid, shortlinkId, 20)
+                .progress(function (progress) {
+                    console.log(progress);
+                })
+                .done(function () {
+                    self.$('#sellModal').modal('hide');
+                    self.clear();
+                })
+                .fail(function () {
+                    self.$('#sellModal').modal('hide');
+                });
             this.$('#sellModal').modal().on('hidden.bs.modal', function () {
 
             });
-            p.done(function (token) {
-                var prp = merchant.makePaymentRequest(token, token, self.sum.toFixed(2));
-                prp.done(function (res) {
-                    var tid = res.id;
-                    var rop = merchant.pollAuth(tid)
-                        .done(function () {
-                            merchant.capturePaymentRequest(tid).done(function () {
-                                self.$('#sellModal').modal('hide');
-                                self.clear();
-                            });
-                        });
-                });
-            });
-
         },
 
         render: function (options) {
