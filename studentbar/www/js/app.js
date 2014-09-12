@@ -1,6 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'shop'],
 function ($, _, Backbone, Shop) {
-
     var app = _.extend({
 
         start: function () {
@@ -38,6 +37,7 @@ function ($, _, Backbone, Shop) {
     var Router = Backbone.Router.extend({
 
         routes: {
+            'index.html': 'edit',
             '': 'edit',
             'edit': 'edit'
         },

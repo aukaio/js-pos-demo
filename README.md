@@ -11,8 +11,8 @@ npm install bower
 sudo npm install -g cordova
 brew install ant
 cd studentbar
-cordova platform add ios
 cordova platform add android
+cordova plugin add org.apache.cordova.console
 ```
 
 Get started
@@ -32,15 +32,18 @@ Build the app
 ```bash
 cd studentbar
 cordova build
-cordova build ios
 cordova build android
 ```
 
-Install the app on your Android device
+Build and install the app on your Android device
 -------------------------------
 Plug in the usb cable and type
 ```bash
-adb install ./platforms/android/ant-build/StudentBar-debug.apk
+cordova run android
 ```
 
+View the log with
+```bash
+adb logcat -v time | grep Cordova
+```
 

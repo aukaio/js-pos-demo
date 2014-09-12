@@ -25,6 +25,8 @@ require.config({
 
 
 require(['jquery', 'app', 'merchant'], function ($, App, Merchant) {
+    console.log('debug before App.start();')
     App.start();
+    console.log('debug after App.start();')
 });
 
