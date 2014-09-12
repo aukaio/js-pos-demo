@@ -97,8 +97,8 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, p
             var product = this.collection.get(ev.currentTarget.id);
             var quantity = parseInt($(ev.currentTarget).find('.quantity').text());
             $(ev.currentTarget).find('.quantity').text(quantity+1);
-            this.sum += product.get('price');
-            this.$('.totalAmount').text(this.sum);
+            this.sum += parseFloat(product.get('price'));
+            this.$('.totalAmount').text(this.sum.toFixed(2));
         },
 
         clear: function (ev) {
