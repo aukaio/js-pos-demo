@@ -1,9 +1,35 @@
-<form>
-    <input name="title" type="text"/>
-    <input name="price" type="text"/>
-    <input name="save" type="submit"/>
-</form>
+<div class="container">
+    <div class="row">
+        <header>
 
-<ul id="products">
+            <form class="form" role="form">
+                <div class="col-md-9">
+                    <input class="form-control input-lg" name="title" type="text" placeholder="Product title"/>
+                </div>
 
-</ul>
+                <div class="col-md-2">
+                    <input class="form-control input-lg" name="price" type="text" placeholder="Price"/>
+                </div>
+
+                <div class="col-md-1">
+                    <input class="form-control btn btn-primary input-lg" name="save" type="submit" value="Add"/>
+                </div>
+            </form>
+
+        </header>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+
+    <div class="page-header">
+        <ul id="products" class="list-group">
+        </ul>
+    </div>
+
+    </div>
+</div>
+
+

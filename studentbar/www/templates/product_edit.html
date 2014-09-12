@@ -1,3 +1,18 @@
-<li>
-    <%= title %> : NOK <%= price %> <button id="<%= id %>">Delete</button>
+<li class="list-group-item">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <h4><%= title %></h4>
+            </div>
+
+            <div class="col-md-2">
+                <h4><small>NOK <%= price %></small></h4>
+            </div>
+
+            <div class="col-md-1">
+                <button id="<%= id %>"> <span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+    </div>
 </li>
+

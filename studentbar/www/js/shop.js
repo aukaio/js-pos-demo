@@ -29,13 +29,9 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, p
         createProduct: function (ev) {
             ev.preventDefault();
             var values = this.$('form').serializeArray();
-            values = _.reduce(values, function(memo, field) {
-                memo[field.name] = field.value;
-                return memo;
-            }, {});
+            values = {title: values[0].value, price: parseFloat(values[1].value).toFixed(2)};
             this.collection.create(values);
             this.$('input[name="title"]').focus();
-
         },
 
         deleteProduct: function (ev){
@@ -51,7 +47,7 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, p
             var products = this.collection.models;
             this.$el.html(this.template());
             this.collection.each(function (product){
-                self.$('#products').append(
+                self.$('#products').prepend(
                     productEditTemplate(product.toJSON())
                 );
             })
