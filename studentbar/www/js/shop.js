@@ -16,6 +16,35 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, p
     Shop.ProductListView = Backbone.View.extend({
 
         template: _.template(productListTemplate),
+        events: {
+            'submit form': 'createProduct',
+            'click button': 'deleteProduct'
+        },
+
+        initialize: function(options) {
+            this.collection.on('change', this.render, this);
+            this.collection.on('remove', this.render, this);
+        },
+
+        createProduct: function (ev) {
+            ev.preventDefault();
+            var values = this.$('form').serializeArray();
+            values = _.reduce(values, function(memo, field) {
+                memo[field.name] = field.value;
+                return memo;
+            }, {});
+            this.collection.create(values);
+            this.$('input[name="title"]').focus();
+
+        },
+
+        deleteProduct: function (ev){
+            ev.preventDefault();
+            this.collection.get(ev.currentTarget.id).destroy();
+            //this.collection.remove(ev.currentTarget.id);
+            //this.collection.reset(this.collection.models);
+            //this.collection.save();
+        },
 
         render: function() {
             var self = this;

@@ -59,6 +59,7 @@ function ($, _, Backbone, Shop) {
             products.fetch();
             var productEditView = new Shop.ProductListView({collection: products});
             $('#main').html(productEditView.render().$el);
+            $('input[name="title"]').focus();
         }
     });
 
