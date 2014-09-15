@@ -4,18 +4,21 @@ define(['underscore', 'backbone', 'merchant',
         'text!/templates/alert.html',
         'text!/templates/product_list.html',
         'text!/templates/product_edit.html',
+        'text!/templates/tabs.html',
         'backboneLS', 'bootstrap'],
-function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, productListTemplate, productEditTemplate) {
+function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, productListTemplate, productEditTemplate, tabsTemplate) {
 
     var shortlinkId = 'xyQ7H';
     var Shop = {};
-
     var alertTemplate = _.template(alertTemplate);
     var productEditTemplate = _.template(productEditTemplate);
+    var tabsTemplate = _.template(tabsTemplate);
+
 
     Shop.ProductListView = Backbone.View.extend({
 
         template: _.template(productListTemplate),
+
         events: {
             'submit form': 'createProduct',
             'click button': 'deleteProduct'
@@ -32,6 +35,7 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, p
             values = {title: values[0].value, price: parseFloat(values[1].value).toFixed(2)};
             this.collection.create(values);
             this.$('input[name="title"]').focus();
+            //window.location.href = "/#shop";
         },
 
         deleteProduct: function (ev){
@@ -46,6 +50,7 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, p
             var self = this;
             var products = this.collection.models;
             this.$el.html(this.template());
+            this.$el.prepend(tabsTemplate());
             this.collection.each(function (product){
                 self.$('#products').prepend(
                     productEditTemplate(product.toJSON())
@@ -132,6 +137,7 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, p
         render: function (options) {
             var v;
             this.$el.html(this.template({total: 0}));
+            this.$el.prepend(tabsTemplate());
             _.each(this.collection.models, function(product) {
                 v = new Shop.ProductEntryView({model: product});
                 this.$('#products').append(v.render().$el);
