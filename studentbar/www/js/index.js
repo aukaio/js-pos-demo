@@ -38,13 +38,13 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
+        //if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
             // On smart phone
-            document.addEventListener("deviceready", this.onDeviceReady, false);
-        } else {
+        //    document.addEventListener("deviceready", this.onDeviceReady, false);
+        //} else {
             // On browser
             this.onDeviceReady();
-        }
+        //}
     },
 
 
