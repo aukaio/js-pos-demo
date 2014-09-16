@@ -40,7 +40,7 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
             // On smart phone
-            document.addEventListener("deviceready", onDeviceReady, false);
+            document.addEventListener("deviceready", this.onDeviceReady, false);
         } else {
             // On browser
             this.onDeviceReady();
