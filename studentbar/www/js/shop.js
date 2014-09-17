@@ -78,8 +78,10 @@ function (_, Backbone, merchant, productTemplate, shopTemplate, alertTemplate, p
         template: _.template(productTemplate),
 
         render: function (options) {
+
             this.$el.html(this.template(this.model.toJSON()));
             this.$el.attr('id', this.model.id);
+            this.$el.attr('class', 'list-group-item');
             return this;
         }
     });

@@ -45,7 +45,7 @@ define(['jquery'], function ($) {
                             clearTimeout(timeout);
                             p.resolve(res.id);
                         } else {
-                            timeout = poll(1000);
+                            timeout = poll(300);
                         }
                     }).fail(function () {
                         p.reject();

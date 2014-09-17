@@ -45,11 +45,6 @@ function ($, _, Backbone, Shop) {
         shop: function () {
             var products = new Shop.Products();
             products.fetch();
-            if (products.size() === 0) {
-                products.create({title: 'Vanity Cola', price: 1000});
-                products.create({title: 'Beer', price: 10});
-            }
-
             var shop = new Shop.ShopView({collection: products});
             $('#main').html(shop.render().$el);
         },
