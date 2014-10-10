@@ -49,8 +49,8 @@ IOS/www/
 .Spotlight-V100
 .Trashes
 
-/studentbar/www/js/libs/
-/studentbar/platforms/
-/studentbar/plugins/
+www/js/libs/
+platforms/
+plugins/
 .idea/
 

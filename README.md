@@ -5,41 +5,35 @@ Javascript browser-side mCASH POS
 
 Dependencies
 ---------
+
+For Mac OS X
+
 ```bash
 brew install node
-npm install bower
+sudo npm install bower
 sudo npm install -g cordova
+sudo npm install -g ionic
 brew install ant
-cd studentbar
-cordova platform add android
-cordova plugin add org.apache.cordova.console
 ```
 
 Get started
 ---------
 ```bash
-cd studentbar
 bower install
-cd www
-python -m SimpleHTTPServer
-#Start browser 
-http://localhost:8000/
-```
+ionic platform add android
+ionic plugin add org.apache.cordova.console
 
-
-Build the app
-----------
+Run the app in your browser
+----------------------
 ```bash
-cd studentbar
-cordova build
-cordova build android
+ionic serve
 ```
 
 Build and install the app on your Android device
 -------------------------------
 Plug in the usb cable and type
 ```bash
-cordova run android
+ionic run android
 ```
 
 View the log with
