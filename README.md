@@ -22,6 +22,7 @@ Get started
 bower install
 ionic platform add android
 ionic plugin add org.apache.cordova.console
+```
 
 Run the app in your browser
 ----------------------
