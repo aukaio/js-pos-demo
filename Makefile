@@ -5,11 +5,11 @@ start_in_browser: bower-exists cordova-exists ionic-exists ant-exists platforms/
 %-exists: ; @which $* > /dev/null
 
 install:
-	bower install
 	ionic run android
 	adb logcat -v time | grep Cordova
 
 platforms/android/CordovaLib/build.xml:
+	bower install
 	ionic platform add  android
 
 plugins/org.apache.cordova.console:
