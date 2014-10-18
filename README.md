@@ -10,9 +10,9 @@ For Mac OS X
 
 ```bash
 brew install node
-sudo npm install bower
-sudo npm install -g cordova
-sudo npm install -g ionic
+npm install bower
+npm install -g cordova
+npm install -g ionic
 brew install ant
 ```
 
@@ -20,8 +20,8 @@ Get started
 ---------
 ```bash
 bower install
-ionic platform add android
-ionic plugin add org.apache.cordova.console
+cordova platform add android
+cordova plugin add org.apache.cordova.console
 ```
 
 Run the app in your browser
@@ -34,7 +34,7 @@ Build and install the app on your Android device
 -------------------------------
 Plug in the usb cable and type
 ```bash
-ionic run android
+cordova run android
 ```
 
 View the log with
